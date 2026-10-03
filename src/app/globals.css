@@ -1,26 +1,123 @@
 @import "tailwindcss";
+@import "lenis/dist/lenis.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ── Tokens: Halston monochrome ────────────────────────── */
+@theme {
+  /* Replace Tailwind's palette entirely so only these five colours exist. */
+  --color-*: initial;
+  --color-white: #ffffff;
+  --color-off-white: #f7f7f7;
+  --color-black: #000000;
+  --color-grey: #333333;
+  --color-line: #e5e5e5;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  --font-sans: var(--font-inter), "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  /* Critically damped curve for CSS release transitions (Motion springs handle JS). */
+  --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ── Type scale ─────────────────────────────────────────── */
+@utility type-h1 {
+  /* 4rem floor, relaxed to 13vw on phones so one-word chapters never clip */
+  font-size: clamp(min(4rem, 13vw), 10vw, 10rem);
+  font-weight: 600;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+@utility type-h2 {
+  font-size: clamp(2.75rem, 10vw, 8rem);
+  font-weight: 600;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+@utility type-h3 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+@utility type-body {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+@utility type-meta {
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+}
+@utility type-ui {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ── Instant press: 0.98 on pointer-down, spring back on release ── */
+@utility press {
+  transition: transform 0.4s var(--ease-spring), background-color 0.2s, color 0.2s;
+  &:active {
+    transform: scale(0.98);
+    transition-duration: 0s;
   }
 }
 
+/* ── Translucent material for fixed chrome ─────────────── */
+@utility material {
+  background-color: rgb(255 255 255 / 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+@utility material-dark {
+  background-color: rgb(0 0 0 / 0.35);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* ── Page grid: 12 columns, 24px gutters, 24/40px margins ── */
+@utility page-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: 24px;
+  padding-inline: 24px;
+  @media (width >= 48rem) {
+    padding-inline: 40px;
+  }
+}
+
+/* ── Base ───────────────────────────────────────────────── */
+html {
+  background: var(--color-white);
+  color-scheme: light;
+}
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-white);
+  color: var(--color-black);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+::selection {
+  background: var(--color-black);
+  color: var(--color-white);
+}
+:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .press:active {
+    transform: none;
+  }
 }
