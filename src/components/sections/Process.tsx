@@ -3,7 +3,7 @@ import { Section } from "@/components/ui/Section";
 
 export function Process() {
   return (
-    <Section id="process" index={3} label="Process" title="Seven days, address to film" tone="off-white">
+    <Section id="process" index={3} label="Pipeline" title="Seven days, assets to film" tone="off-white">
       <div className="page-grid">
         {/* Desktop: one line, marks positioned by day */}
         <div className="relative col-span-12 hidden md:block">

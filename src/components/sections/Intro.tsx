@@ -17,10 +17,10 @@ export function Intro() {
 
       {/* Featured tour */}
       <div id="work" className="page-grid mt-24 scroll-mt-16 md:mt-40">
-        <Still ratio="16 / 9" label="Featured still — 16:9" className="col-span-12" />
+        <Still ratio="16 / 9" label="Placeholder still — 16:9" className="col-span-12" />
         <div className="col-span-12 mt-6 flex items-baseline justify-between border-b border-line pb-6">
           <h3 className="type-h3">{featured.name}</h3>
-          <p className="type-meta text-grey">Featured tour</p>
+          <p className="type-meta text-grey">Featured walkthrough</p>
         </div>
         <dl className="col-span-12 grid grid-cols-2 md:grid-cols-4">
           {featured.specs.map((s, i) => (

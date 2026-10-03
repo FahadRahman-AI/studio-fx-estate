@@ -28,7 +28,7 @@ export function Nav() {
           ))}
           <li>
             <a href="#book" className={`${buttonPrimary} px-4 py-3`}>
-              Book a shoot +
+              Commission a tour +
             </a>
           </li>
         </ul>
@@ -55,7 +55,7 @@ export function Nav() {
             transition={reduced ? fade : spring}
             className="border-t border-line px-6 pb-6 md:hidden"
           >
-            {[...nav, { label: "Book a shoot", href: "#book" }].map((item) => (
+            {[...nav, { label: "Commission a tour", href: "#book" }].map((item) => (
               <li key={item.href} className="border-b border-line">
                 <a
                   href={item.href}

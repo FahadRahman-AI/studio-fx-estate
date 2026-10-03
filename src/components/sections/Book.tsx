@@ -35,15 +35,16 @@ export function Book() {
   return (
     <section id="book" aria-labelledby="book-title" className="scroll-mt-16 border-t border-line bg-white py-24 md:py-40">
       <div className="page-grid">
-        <p className="type-meta col-span-12 text-grey md:col-span-3">04 — Booking</p>
+        <p className="type-meta col-span-12 text-grey md:col-span-3">04 — Commission</p>
         <h2 id="book-title" className="type-h1 col-span-12 mt-6 md:mt-0">
-          Start your tour
+          Commission a tour
         </h2>
       </div>
 
       <div className="page-grid mt-16 gap-y-10 md:mt-24">
         <p className="type-body col-span-12 max-w-[40ch] text-grey md:col-span-3">
-          Send the address and we’ll reply with a flight plan and fixed quote within one working day.
+          Send the property details and we’ll reply with a storyboard and fixed quote within one
+          working day.
           Prefer email?{" "}
           <a href={`mailto:${brand.email}`} className="text-black underline underline-offset-4">
             {brand.email}
@@ -62,10 +63,10 @@ export function Book() {
               >
                 <p className="type-h3">Thanks — we’ve got it.</p>
                 <p className="type-body mt-3 text-grey">
-                  Your flight plan and quote will arrive within one working day.
+                  Your storyboard and quote will arrive within one working day.
                 </p>
                 <button type="button" onClick={() => setSent(false)} className={`${buttonSecondary} mt-10 px-5 py-4`}>
-                  Book another property +
+                  Commission another tour +
                 </button>
               </motion.div>
             ) : (
@@ -79,15 +80,15 @@ export function Book() {
                 className="grid gap-x-6 gap-y-10 md:grid-cols-2"
               >
                 <div className="md:col-span-2">
-                  <Field label="Property address" name="address" required autoComplete="street-address" />
+                  <Field label="Property name or address" name="address" required autoComplete="street-address" />
                 </div>
                 <Field label="Your name" name="name" required autoComplete="name" />
                 <Field label="Email" name="email" type="email" required autoComplete="email" />
-                <Field label="Preferred shoot date" name="date" type="date" />
+                <Field label="Listing launch date" name="date" type="date" />
                 <Field label="Bedrooms" name="bedrooms" type="number" min={1} inputMode="numeric" />
 
                 <fieldset className="md:col-span-2">
-                  <legend className="type-meta text-grey">What should we film?</legend>
+                  <legend className="type-meta text-grey">Which workflows do you need?</legend>
                   <div className="mt-4 flex flex-wrap gap-2">
                     {shotOptions.map((s) => {
                       const on = shots.includes(s);
@@ -111,7 +112,7 @@ export function Book() {
 
                 <div className="md:col-span-2">
                   <button type="submit" className={`${buttonPrimary} px-5 py-4`}>
-                    Send for a flight plan +
+                    Commission a tour +
                   </button>
                 </div>
               </motion.form>

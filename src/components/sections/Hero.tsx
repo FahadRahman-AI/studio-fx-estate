@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { chapters, disciplines, heroDurationSeconds } from "@/lib/content";
+import { chapters, heroDurationSeconds, heroTags } from "@/lib/content";
 import { heroFrames } from "@/lib/frames";
 import { drawWalkthrough } from "@/lib/placeholderScene";
 
@@ -164,7 +164,7 @@ export function Hero() {
       dirty = true;
 
       // Title glides up and out along the same vertical path the chapters use.
-      const titleOut = smooth(0.02, 0.12, p);
+      const titleOut = smooth(0.01, 0.05, p);
       titleRef.current!.style.opacity = String(1 - titleOut);
       titleRef.current!.style.transform = `translate3d(0, ${-titleOut * GLIDE}px, 0)`;
 
@@ -203,7 +203,7 @@ export function Hero() {
 
 
   return (
-    <section ref={sectionRef} id="top" aria-label="Walkthrough" className="relative h-[400svh] bg-black">
+    <section ref={sectionRef} id="top" aria-label="Walkthrough" className="relative h-[500svh] bg-black">
       <div className="sticky top-0 h-svh overflow-hidden text-white">
         <canvas
           ref={canvasRef}
@@ -218,8 +218,13 @@ export function Hero() {
           ref={titleRef}
           className="page-grid absolute inset-x-0 bottom-40 transition-opacity duration-200 motion-safe:transition-none md:bottom-44"
         >
-          <p className="type-meta col-span-12 mb-6 md:col-span-3">Studio FX Estate — FPV property films</p>
-          <h1 className="type-h1 col-span-12 md:col-span-11">Walk in before the viewing</h1>
+          <p className="type-meta col-span-12 mb-6 md:col-span-3">Sector: Luxury real estate</p>
+          <h1 className="type-h1 col-span-12 md:col-span-11">AI tours of luxury homes</h1>
+          <p className="type-body col-span-12 mt-6 max-w-[48ch] text-white/80 md:col-span-6">
+            We combine architectural art direction with generative AI to turn the photos, renders
+            and plans you already have into fluid cinematic walkthroughs. No cameras, crews or
+            drones on site.
+          </p>
         </div>
 
         {/* One massive word per room, gliding up through the frame */}
@@ -245,7 +250,7 @@ export function Hero() {
         <div className="material-dark absolute inset-x-0 bottom-0 border-t border-white/20">
           <div className="page-grid items-center py-4">
             <ul className="type-meta col-span-3 hidden gap-4 lg:flex">
-              {disciplines.map((d) => (
+              {heroTags.map((d) => (
                 <li key={d}>{d}</li>
               ))}
             </ul>
@@ -273,7 +278,7 @@ export function Hero() {
               href="#book"
               className="press type-ui col-span-6 justify-self-end whitespace-nowrap bg-white px-4 py-3 text-black sm:col-span-4 lg:col-span-2"
             >
-              Book a shoot +
+              Commission<span className="hidden sm:inline"> a tour</span> +
             </a>
           </div>
         </div>

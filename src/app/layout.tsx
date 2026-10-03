@@ -9,9 +9,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Studio FX Estate — Cinematic property tours",
+  title: "Studio FX Estate — AI cinematic walkthroughs for luxury property",
   description:
-    "FPV drone walkthroughs that let buyers walk through the door before they book a viewing.",
+    "A creative AI studio that turns listing photos, renders and floor plans into cinematic walkthroughs of luxury homes. No cameras, crews or drones on site.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

@@ -24,7 +24,7 @@ export function Footer() {
           </ul>
         </div>
         <div className={cell}>
-          <p className="type-meta text-white/60">Services</p>
+          <p className="type-meta text-white/60">Workflows</p>
           <ul className="type-ui mt-6 space-y-4">
             {disciplines.map((d) => (
               <li key={d}>{d}</li>

@@ -9,27 +9,33 @@ export const brand = {
 };
 
 export const nav = [
-  { label: "Work", href: "#work" },
-  { label: "Services", href: "#services" },
+  { label: "Walkthroughs", href: "#work" },
+  { label: "Workflows", href: "#services" },
   { label: "Process", href: "#process" },
 ];
 
-export const disciplines = ["Interior FPV", "Aerial", "Twilight"];
+export const disciplines = ["Generative FPV", "Image-to-video", "Synthetic rendering"];
+/** Shorter set for the hero strip, which only has three grid columns. */
+export const heroTags = ["Generative FPV", "Image-to-video"];
 
-/** Hero walkthrough chapters. `from`/`to` are scroll progress (0–1). */
+/**
+ * Hero walkthrough chapters, timed to the scenes in footage/hero.mp4.
+ * `from`/`to` are scroll progress (0–1) = frame / 167.
+ */
 export const chapters = [
-  { word: "Arrival", from: 0.12, to: 0.34 },
-  { word: "Threshold", from: 0.34, to: 0.56 },
-  { word: "Light", from: 0.56, to: 0.78 },
-  { word: "View", from: 0.78, to: 1.01 },
+  { word: "Arrival", from: 0.06, to: 0.18 }, // driveway, through the glass doors
+  { word: "Light", from: 0.18, to: 0.42 }, // sunlit living room and great room
+  { word: "Grounds", from: 0.42, to: 0.6 }, // across the lawn
+  { word: "Detail", from: 0.6, to: 0.84 }, // terrace dining, floating stair
+  { word: "Retreat", from: 0.84, to: 1.01 }, // stone bathroom, cinema room
 ] as const;
 
-/** Length of the placeholder walkthrough, used for the HUD timecode. */
-export const heroDurationSeconds = 48;
+/** Length of the hero clip, used for the HUD timecode. */
+export const heroDurationSeconds = 14;
 
 export const intro = {
-  title: "Spaces defined by movement",
-  body: "Every film starts by walking the house. We find the line through it that buyers will remember, then fly it in one unbroken take.",
+  title: "From listing photos to moving tours",
+  body: "Send us the photography, renders or floor plans for a property. Our pipeline generates one continuous camera move through it, art-directed shot by shot, so buyers understand the layout before they visit.",
 };
 
 // PLACEHOLDER
@@ -38,23 +44,34 @@ export const featured = {
   specs: [
     { label: "Location", value: "Surrey Hills" },
     { label: "Runtime", value: "2:50" },
-    { label: "Format", value: "FPV + aerial" },
+    { label: "Pipeline", value: "Image-to-video" },
     { label: "Year", value: "2026" },
   ],
 };
 
-// PLACEHOLDER — these read as real results; replace before launch.
+// PLACEHOLDER — "48+" reads as a real result; replace before launch.
 export const stats = [
-  { value: "96%", label: "Booked a viewing" },
-  { value: "48+", label: "Homes filmed" },
+  { value: "48+", label: "Estates generated" },
+  { value: "0", label: "Cameras on site" },
   { value: "7", label: "Days to delivery" },
 ];
 
-// PLACEHOLDER counts
 export const services = [
-  { name: "Interior FPV", count: "48+ homes", body: "One continuous flight from the front door through every room that sells the house." },
-  { name: "Aerial", count: "62+ estates", body: "Grounds, boundaries and setting, shot high and wide so buyers understand the plot." },
-  { name: "Twilight", count: "30+ exteriors", body: "The house lit from inside at blue hour, when the architecture reads clearest." },
+  {
+    name: "Generative FPV property tours",
+    meta: "Workflow: Generative FPV",
+    body: "One continuous first-person sweep from the driveway through every room, on camera paths no drone could physically or legally fly.",
+  },
+  {
+    name: "Image-to-video walkthroughs",
+    meta: "Pipeline: Image-to-video",
+    body: "Your existing listing photography becomes moving footage, with seamless transitions between rooms and nothing new to shoot.",
+  },
+  {
+    name: "Synthetic architectural rendering",
+    meta: "Input: Plans and renders",
+    body: "For off-plan and unbuilt estates, we generate finished, furnished interiors from your plans and design renders, at any time of day, including golden hour.",
+  },
 ];
 
 // PLACEHOLDER — replace with real tours.
@@ -66,10 +83,10 @@ export const tours = [
 ];
 
 export const steps = [
-  { day: 0, title: "You send the address", body: "Tell us about the property and the rooms that sell it. We plan the flight path and send it back for sign-off." },
-  { day: 3, title: "We fly it", body: "One crew, half a day on site. Interior FPV first, aerials and twilight if booked." },
+  { day: 0, title: "You send the assets", body: "Share listing photos, renders or floor plans and tell us which spaces sell the home. We storyboard the camera path for your sign-off." },
+  { day: 3, title: "We generate it", body: "Our pipeline generates each sequence, then we art-direct light, pacing and transitions until every move feels physical." },
   { day: 7, title: "You get the film", body: "A graded, scored walkthrough plus vertical cuts for social, ready for your listing." },
 ];
 export const processSpanDays = 7;
 
-export const shotOptions = ["Interior FPV", "Aerial", "Twilight", "Grounds"];
+export const shotOptions = ["Generative FPV", "Image-to-video", "Synthetic rendering", "Golden hour"];

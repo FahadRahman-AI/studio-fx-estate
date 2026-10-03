@@ -12,7 +12,7 @@ const placement = [
 
 export function Tours() {
   return (
-    <Section id="tours" index={2} label="Selected tours" title="Recent walkthroughs">
+    <Section id="tours" index={2} label="Output: Walkthroughs" title="Recent tours">
       <ul className="page-grid gap-y-16 md:gap-y-24">
         {tours.map((t, i) => (
           <li key={t.name} className={`col-span-12 ${placement[i % placement.length]}`}>

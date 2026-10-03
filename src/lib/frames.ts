@@ -1,11 +1,14 @@
 /**
- * Hero image sequence. While `count` is 0 the hero draws a procedural
- * placeholder walkthrough. To use real footage, run
- * `scripts/extract-frames.sh path/to/clip.mp4` and set `count` to the
- * number of frames it reports.
+ * Hero image sequence (from footage/hero.mp4, 12 fps). If `count` is 0 the
+ * hero falls back to a procedural placeholder walkthrough.
+ *
+ * To swap the clip, regenerate the frames and set `count` to what's reported:
+ *   with ffmpeg:  scripts/extract-frames.sh clip.mp4
+ *   macOS only:   swift scripts/extract-frames-mac.swift clip.mp4 <tmpDir> 12
+ *                 node scripts/encode-frames.mjs <tmpDir>
  */
 export const heroFrames = {
-  count: 0,
+  count: 168,
   /** Folder per width; the scrubber picks the smallest that covers the screen. */
   widths: [1280, 1920] as const,
   path: (width: number, index: number) =>
