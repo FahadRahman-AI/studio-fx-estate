@@ -90,7 +90,7 @@ export const services = [
 // PLACEHOLDER — replace with real tours. Add `video: "/videos/<file>.mp4"` once footage exists.
 export const tours: { name: string; place: string; length: string; pipeline: string; video?: string }[] = [
   { name: "The glass house", place: "Beverley Hills", length: "2:40", pipeline: "Generative FPV", video: "/videos/the-glass-house.mp4" },
-  { name: "Harbour Lofts", place: "Bristol", length: "1:55", pipeline: "Image-to-video" },
+  { name: "Bayside", place: "Bristol", length: "1:55", pipeline: "Image-to-video", video: "/videos/bayside.mp4" },
   { name: "Westcombe Farm", place: "Somerset", length: "3:10", pipeline: "Synthetic rendering" },
   { name: "102 Siena Drive", place: "Beverley Hills", length: "2:05", pipeline: "Image-to-video", video: "/videos/102-siena-drive.mp4" },
 ];
