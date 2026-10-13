@@ -35,7 +35,7 @@ export function Book() {
   return (
     <section id="book" aria-labelledby="book-title" className="scroll-mt-16 border-t border-line bg-white py-24 md:py-40">
       <div className="page-grid">
-        <p className="type-meta col-span-12 text-grey md:col-span-3">04 — Commission</p>
+        <p className="type-meta col-span-12 text-grey md:col-span-3">05 — Commission</p>
         <h2 id="book-title" className="type-h1 col-span-12 mt-6 md:mt-0">
           Commission a tour
         </h2>

@@ -4,6 +4,7 @@ import { Intro } from "@/components/sections/Intro";
 import { Services } from "@/components/sections/Services";
 import { VideoArchiveGrid } from "@/components/sections/VideoArchiveGrid";
 import { Process } from "@/components/sections/Process";
+import { Pricing } from "@/components/sections/Pricing";
 import { Book } from "@/components/sections/Book";
 import { Footer } from "@/components/sections/Footer";
 
@@ -17,6 +18,7 @@ export default function Home() {
         <Services />
         <VideoArchiveGrid />
         <Process />
+        <Pricing />
         <Book />
       </main>
       <Footer />

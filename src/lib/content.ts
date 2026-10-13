@@ -5,7 +5,7 @@
 
 export const brand = {
   name: "Studio FX Estate",
-  email: "hello@example.com", // PLACEHOLDER
+  email: "fahadrahman9819@gmail.com",
 };
 
 export const nav = [
@@ -103,3 +103,49 @@ export const steps = [
 export const processSpanDays = 7;
 
 export const shotOptions = ["Generative FPV", "Image-to-video", "Synthetic rendering", "Golden hour"];
+
+/** Packages, all prices in USD. */
+export const pricing = [
+  {
+    name: "Single Listing",
+    price: "$299",
+    per: "/video",
+    popular: false,
+    features: [
+      "FPV cinematic walkthrough",
+      "Every room & key feature covered",
+      "Optimised for Instagram & WhatsApp",
+      "Delivered in 48 hours",
+      "1 revision included",
+      "Vertical format (9:16) available",
+    ],
+  },
+  {
+    name: "Monthly Retainer",
+    price: "$799",
+    per: "/month",
+    popular: true,
+    features: [
+      "4 × cinematic listing videos",
+      "Priority 24-hour turnaround",
+      "Branded intro / outro available",
+      "Optimised for Reels, TikTok & Property Finder",
+      "Vertical format (9:16) included",
+      "Unlimited revisions",
+    ],
+  },
+  {
+    name: "Agency Partner",
+    price: "$1,990",
+    per: "/month",
+    popular: false,
+    features: [
+      "Up to 10 listing videos per month",
+      "White-label — your branding throughout",
+      "Same-day turnaround on priority listings",
+      "Vertical format (9:16) included",
+      "Dedicated Slack channel",
+      "Monthly performance report",
+    ],
+  },
+];
