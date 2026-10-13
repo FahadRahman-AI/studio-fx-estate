@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useSyncExternalStore } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { chapters, heroDurationSeconds, heroTags } from "@/lib/content";
@@ -19,6 +19,23 @@ const smooth = (a: number, b: number, v: number) => {
 };
 const timecode = (s: number) =>
   `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
+
+/** Phones get a looping video instead of the scroll-scrubbed canvas. Matches Tailwind's `md` breakpoint. */
+const MOBILE_QUERY = "(max-width: 47.99rem)";
+const MOBILE_VIDEO = "/videos/hero-mobile.mp4";
+
+/** null during SSR, then true/false; re-renders if the viewport crosses the breakpoint. */
+function useIsMobile() {
+  return useSyncExternalStore<boolean | null>(
+    (onChange) => {
+      const mq = window.matchMedia(MOBILE_QUERY);
+      mq.addEventListener("change", onChange);
+      return () => mq.removeEventListener("change", onChange);
+    },
+    () => window.matchMedia(MOBILE_QUERY).matches,
+    () => null,
+  );
+}
 
 /** Load order: first frame, then progressively finer strides so any scrub position has a nearby frame early. */
 function loadOrder(count: number) {
@@ -43,9 +60,47 @@ export function Hero() {
   const segmentRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const roomRef = useRef<HTMLSpanElement>(null);
   const timeRef = useRef<HTMLSpanElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const mobile = useIsMobile();
 
+  /** Bottom-strip readout: chapter progress segments, timecode and room name. */
+  const updateHud = (p: number, active: number) => {
+    segmentRefs.current.forEach((seg, i) => {
+      const c = chapters[i];
+      if (seg) seg.style.transform = `scaleX(${clamp01((p - c.from) / (c.to - c.from))})`;
+    });
+    if (timeRef.current) timeRef.current.textContent = timecode(p * heroDurationSeconds);
+    if (roomRef.current) roomRef.current.textContent = active >= 0 ? chapters[active].word : "Approach";
+  };
+
+  // ── Mobile: loop the video; the headline stays, the HUD follows playback ──
   useEffect(() => {
+    if (mobile !== true) return;
+    const video = videoRef.current!;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // iOS only autoplays when muted is set as a property before play().
+    video.muted = true;
+    if (!reduced) video.play().catch(() => {});
+
+    const tick = () => {
+      if (!video.duration) return;
+      const p = video.currentTime / video.duration;
+      updateHud(p, chapters.findIndex((c) => p >= c.from && p < c.to));
+    };
+    gsap.ticker.add(tick);
+    return () => {
+      gsap.ticker.remove(tick);
+      video.pause();
+    };
+  }, [mobile]);
+
+  // ── Desktop: scroll-scrubbed canvas ──
+  useEffect(() => {
+    if (mobile !== false) return;
     const section = sectionRef.current!;
+    const title = titleRef.current!;
+    const chapterEls = chapterRefs.current;
     const canvas = canvasRef.current!;
     const ctx = canvas.getContext("2d", { alpha: false })!;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -130,15 +185,7 @@ export function Hero() {
     const setChapterState = (p: number) => {
       const active = chapters.findIndex((c) => p >= c.from && p < c.to);
 
-      // HUD
-      segmentRefs.current.forEach((seg, i) => {
-        const c = chapters[i];
-        if (seg) seg.style.transform = `scaleX(${clamp01((p - c.from) / (c.to - c.from))})`;
-      });
-      if (timeRef.current) timeRef.current.textContent = timecode(p * heroDurationSeconds);
-      if (active !== activeChapter && roomRef.current) {
-        roomRef.current.textContent = active >= 0 ? chapters[active].word : "Approach";
-      }
+      updateHud(p, active);
 
       if (reduced) {
         // Static key frame per chapter, swapped with a cross-fade.
@@ -198,18 +245,39 @@ export function Hero() {
       gsap.ticker.remove(render);
       trigger.kill();
       ro.disconnect();
+      // Leave the overlay in its resting state if we switch to the mobile layout.
+      title.style.removeProperty("opacity");
+      title.style.removeProperty("transform");
+      chapterEls.forEach((el) => {
+        if (!el) return;
+        el.style.opacity = "0";
+        el.style.visibility = "hidden";
+      });
     };
-  }, []);
+  }, [mobile]);
 
 
   return (
-    <section ref={sectionRef} id="top" aria-label="Walkthrough" className="relative h-[500svh] bg-black">
+    <section ref={sectionRef} id="top" aria-label="Walkthrough" className="relative h-svh bg-black md:h-[500svh]">
       <div className="sticky top-0 h-svh overflow-hidden text-white">
         <canvas
           ref={canvasRef}
           aria-hidden
-          className="absolute inset-0 h-full w-full transition-opacity duration-200 ease-linear"
+          className="absolute inset-0 h-full w-full transition-opacity duration-200 ease-linear max-md:hidden"
         />
+        {mobile && (
+          <video
+            ref={videoRef}
+            src={MOBILE_VIDEO}
+            poster={heroFrames.path(1280, 0)}
+            muted
+            loop
+            playsInline
+            preload="auto"
+            aria-hidden
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+        )}
         {/* Flat scrim so white type holds contrast over bright footage */}
         <div aria-hidden className="pointer-events-none absolute inset-0 bg-black/25" />
 

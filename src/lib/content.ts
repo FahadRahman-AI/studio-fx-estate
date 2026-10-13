@@ -66,7 +66,7 @@ export const pipeline = [
 export const stats = [
   { value: "48+", label: "Estates generated" },
   { value: "0", label: "Cameras on site" },
-  { value: "7", label: "Days to delivery" },
+  { value: "48", label: "Hours to delivery" },
 ];
 
 export const services = [
@@ -96,11 +96,11 @@ export const tours: { name: string; place: string; length: string; pipeline: str
 ];
 
 export const steps = [
-  { day: 0, title: "You send the assets", body: "Share listing photos, renders or floor plans and tell us which spaces sell the home. We storyboard the camera path for your sign-off." },
-  { day: 3, title: "We generate it", body: "Our pipeline generates each sequence, then we art-direct light, pacing and transitions until every move feels physical." },
-  { day: 7, title: "You get the film", body: "A graded, scored walkthrough plus vertical cuts for social, ready for your listing." },
+  { hour: 0, title: "You send the assets", body: "Share listing photos, renders or floor plans and tell us which spaces sell the home. We storyboard the camera path for your sign-off." },
+  { hour: 24, title: "We generate it", body: "Our pipeline generates each sequence, then we art-direct light, pacing and transitions until every move feels physical." },
+  { hour: 48, title: "You get the film", body: "A graded, scored walkthrough plus vertical cuts for social, ready for your listing." },
 ];
-export const processSpanDays = 7;
+export const processSpanHours = 48;
 
 export const shotOptions = ["Generative FPV", "Image-to-video", "Synthetic rendering", "Golden hour"];
 
