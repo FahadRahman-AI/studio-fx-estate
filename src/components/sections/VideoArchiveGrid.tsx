@@ -17,20 +17,34 @@ function ArchiveCard({ tour, index }: { tour: Tour; index: number }) {
   const video = useRef<HTMLVideoElement>(null);
   const reduced = useReducedMotion();
 
-  // Touch screens have no hover, so loop while the card is on screen instead.
-  useEffect(() => {
-    const el = video.current;
-    if (!el || reduced || !tour.video || window.matchMedia("(hover: hover)").matches) return;
-    const io = new IntersectionObserver(([e]) => (e.isIntersecting ? el.play().catch(() => {}) : el.pause()), {
-      threshold: 0.5,
-    });
-    io.observe(el);
-    return () => io.disconnect();
-  }, [reduced, tour.video]);
-
   const play = () => {
     if (!reduced && tour.video) video.current?.play().catch(() => {});
   };
+
+  // Touch screens have no hover, so loop while the card is on screen instead.
+  // iOS Low Power Mode rejects play() until a user gesture, so any tap on the
+  // page retries the cards that are currently visible.
+  useEffect(() => {
+    const el = video.current;
+    if (!el || reduced || !tour.video || window.matchMedia("(hover: hover)").matches) return;
+    let visible = false;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        visible = e.isIntersecting;
+        if (visible) el.play().catch(() => {});
+        else el.pause();
+      },
+      { threshold: 0.25 },
+    );
+    io.observe(el);
+    const retry = () => visible && el.paused && el.play().catch(() => {});
+    window.addEventListener("touchend", retry, { passive: true });
+    return () => {
+      io.disconnect();
+      window.removeEventListener("touchend", retry);
+    };
+  }, [reduced, tour.video]);
+
   const pause = () => video.current?.pause();
 
   return (
@@ -48,6 +62,7 @@ function ArchiveCard({ tour, index }: { tour: Tour; index: number }) {
           transition={spring}
           onHoverStart={play}
           onHoverEnd={pause}
+          onTap={play}
         >
           <video
             ref={video}
