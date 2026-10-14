@@ -20,7 +20,7 @@ export const heroTags = ["Generative FPV", "Image-to-video"];
 
 /**
  * Hero walkthrough chapters, timed to the scenes in footage/hero.mp4.
- * `from`/`to` are scroll progress (0–1) = frame / 167.
+ * `from`/`to` are playback progress (0–1) through the hero video.
  */
 export const chapters = [
   { word: "Arrival", from: 0.06, to: 0.18 }, // driveway, through the glass doors
