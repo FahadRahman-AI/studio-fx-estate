@@ -29,11 +29,12 @@ const MOBILE_POSTER = "/frames/hero/mobile-poster.webp";
 /**
  * Raw HTML so `muted` reaches the server-rendered markup — React never emits that
  * attribute, and iOS Safari only autoplays when it is present before any JS runs.
- * The <img> sits behind the video so the hero is never black while iOS blocks or
- * delays playback (Low Power Mode, slow network). The <source> media query keeps
- * desktop browsers from downloading the file.
+ * The <img> sits behind the video, and the video stays transparent until it fires
+ * `playing`: iOS can paint a blocked video (Low Power Mode) as an opaque black
+ * layer above its siblings. The <source> media query keeps desktop browsers from
+ * downloading the file.
  */
-const MOBILE_VIDEO_HTML = `<img src="${MOBILE_POSTER}" alt="" aria-hidden="true" class="absolute inset-0 h-full w-full object-cover"><video autoplay muted loop playsinline preload="auto" poster="${MOBILE_POSTER}" aria-hidden="true" class="absolute inset-0 h-full w-full object-cover"><source src="${MOBILE_VIDEO}" type="video/mp4" media="${MOBILE_QUERY}"></video>`;
+const MOBILE_VIDEO_HTML = `<img src="${MOBILE_POSTER}" alt="" aria-hidden="true" class="absolute inset-0 h-full w-full object-cover"><video autoplay muted loop playsinline preload="auto" poster="${MOBILE_POSTER}" aria-hidden="true" class="absolute inset-0 h-full w-full object-cover" style="opacity:0;transition:opacity .3s" onplaying="this.style.opacity=1"><source src="${MOBILE_VIDEO}" type="video/mp4" media="${MOBILE_QUERY}"></video>`;
 
 /** null during SSR, then true/false; re-renders if the viewport crosses the breakpoint. */
 function useIsMobile() {
@@ -289,14 +290,15 @@ export function Hero() {
           aria-hidden
           className="absolute inset-0 h-full w-full transition-opacity duration-200 ease-linear max-md:hidden"
         />
+        {/* Dev-only: React may log a hydration diff here when `onplaying` has already revealed the video. */}
         <div ref={videoWrapRef} className="md:hidden" dangerouslySetInnerHTML={{ __html: MOBILE_VIDEO_HTML }} />
         {/* Flat scrim so white type holds contrast over bright footage */}
-        <div aria-hidden className="pointer-events-none absolute inset-0 bg-black/25" />
+        <div aria-hidden className="pointer-events-none absolute inset-0 z-10 bg-black/25" />
 
         {/* Opening title */}
         <div
           ref={titleRef}
-          className="page-grid absolute inset-x-0 bottom-40 transition-opacity duration-200 motion-safe:transition-none md:bottom-44"
+          className="page-grid absolute inset-x-0 bottom-40 z-10 transition-opacity duration-200 motion-safe:transition-none md:bottom-44"
         >
           <p className="type-meta col-span-12 mb-6 md:col-span-3">Sector: Luxury real estate</p>
           <h1 className="type-h1 col-span-12 md:col-span-11">AI tours of luxury homes</h1>
@@ -315,7 +317,7 @@ export function Hero() {
               chapterRefs.current[i] = el;
             }}
             style={{ opacity: 0, visibility: "hidden" }}
-            className="page-grid absolute inset-x-0 bottom-40 transition-opacity duration-200 motion-safe:transition-none md:bottom-44"
+            className="page-grid absolute inset-x-0 bottom-40 z-10 transition-opacity duration-200 motion-safe:transition-none md:bottom-44"
           >
             <p className="type-meta col-span-12 mb-6 md:col-span-3">
               {String(i + 1).padStart(2, "0")} / {String(chapters.length).padStart(2, "0")}
@@ -327,7 +329,7 @@ export function Hero() {
         ))}
 
         {/* Bottom strip: disciplines, room + timecode, progress, CTA */}
-        <div className="material-dark absolute inset-x-0 bottom-0 border-t border-white/20">
+        <div className="material-dark absolute inset-x-0 bottom-0 z-10 border-t border-white/20">
           <div className="page-grid items-center py-4">
             <ul className="type-meta col-span-3 hidden gap-4 lg:flex">
               {heroTags.map((d) => (
@@ -364,7 +366,7 @@ export function Hero() {
         </div>
 
         {heroFrames.count === 0 && (
-          <p className="type-meta absolute top-20 right-6 text-white/70 md:right-10">Placeholder walkthrough</p>
+          <p className="type-meta absolute top-20 right-6 z-10 text-white/70 md:right-10">Placeholder walkthrough</p>
         )}
       </div>
     </section>

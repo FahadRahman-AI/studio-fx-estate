@@ -52,6 +52,7 @@ function ArchiveCard({ tour, index }: { tour: Tour; index: number }) {
           <video
             ref={video}
             src={tour.video}
+            poster={tour.poster}
             muted
             loop
             playsInline
