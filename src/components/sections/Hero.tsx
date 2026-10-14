@@ -24,6 +24,13 @@ const timecode = (s: number) =>
 const MOBILE_QUERY = "(max-width: 47.99rem)";
 const MOBILE_VIDEO = "/videos/hero-mobile.mp4";
 
+/**
+ * Raw HTML so `muted` reaches the server-rendered markup — React never emits that
+ * attribute, and iOS Safari only autoplays when it is present before any JS runs.
+ * The <source> media query keeps desktop browsers from downloading the file.
+ */
+const MOBILE_VIDEO_HTML = `<video autoplay muted loop playsinline preload="auto" poster="${heroFrames.path(1280, 0)}" aria-hidden="true" class="absolute inset-0 h-full w-full object-cover"><source src="${MOBILE_VIDEO}" type="video/mp4" media="${MOBILE_QUERY}"></video>`;
+
 /** null during SSR, then true/false; re-renders if the viewport crosses the breakpoint. */
 function useIsMobile() {
   return useSyncExternalStore<boolean | null>(
@@ -60,7 +67,7 @@ export function Hero() {
   const segmentRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const roomRef = useRef<HTMLSpanElement>(null);
   const timeRef = useRef<HTMLSpanElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const videoWrapRef = useRef<HTMLDivElement>(null);
   const mobile = useIsMobile();
 
   /** Bottom-strip readout: chapter progress segments, timecode and room name. */
@@ -76,12 +83,22 @@ export function Hero() {
   // ── Mobile: loop the video; the headline stays, the HUD follows playback ──
   useEffect(() => {
     if (mobile !== true) return;
-    const video = videoRef.current!;
+    const video = videoWrapRef.current!.querySelector("video")!;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    // iOS only autoplays when muted is set as a property before play().
     video.muted = true;
-    if (!reduced) video.play().catch(() => {});
+    const play = () => {
+      if (!reduced && video.paused) video.play().catch(() => {});
+    };
+    if (reduced) video.pause();
+    else play();
+
+    // Low Power Mode blocks autoplay until the first tap; iOS also pauses
+    // inline video when the tab is backgrounded. Retry on both.
+    const onVisible = () => document.visibilityState === "visible" && play();
+    window.addEventListener("touchend", play, { passive: true });
+    window.addEventListener("click", play);
+    document.addEventListener("visibilitychange", onVisible);
 
     const tick = () => {
       if (!video.duration) return;
@@ -91,6 +108,9 @@ export function Hero() {
     gsap.ticker.add(tick);
     return () => {
       gsap.ticker.remove(tick);
+      window.removeEventListener("touchend", play);
+      window.removeEventListener("click", play);
+      document.removeEventListener("visibilitychange", onVisible);
       video.pause();
     };
   }, [mobile]);
@@ -265,19 +285,7 @@ export function Hero() {
           aria-hidden
           className="absolute inset-0 h-full w-full transition-opacity duration-200 ease-linear max-md:hidden"
         />
-        {mobile && (
-          <video
-            ref={videoRef}
-            src={MOBILE_VIDEO}
-            poster={heroFrames.path(1280, 0)}
-            muted
-            loop
-            playsInline
-            preload="auto"
-            aria-hidden
-            className="absolute inset-0 h-full w-full object-cover"
-          />
-        )}
+        <div ref={videoWrapRef} className="md:hidden" dangerouslySetInnerHTML={{ __html: MOBILE_VIDEO_HTML }} />
         {/* Flat scrim so white type holds contrast over bright footage */}
         <div aria-hidden className="pointer-events-none absolute inset-0 bg-black/25" />
 
