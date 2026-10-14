@@ -24,12 +24,16 @@ const timecode = (s: number) =>
 const MOBILE_QUERY = "(max-width: 47.99rem)";
 const MOBILE_VIDEO = "/videos/hero-mobile.mp4";
 
+const MOBILE_POSTER = "/frames/hero/mobile-poster.webp";
+
 /**
  * Raw HTML so `muted` reaches the server-rendered markup — React never emits that
  * attribute, and iOS Safari only autoplays when it is present before any JS runs.
- * The <source> media query keeps desktop browsers from downloading the file.
+ * The <img> sits behind the video so the hero is never black while iOS blocks or
+ * delays playback (Low Power Mode, slow network). The <source> media query keeps
+ * desktop browsers from downloading the file.
  */
-const MOBILE_VIDEO_HTML = `<video autoplay muted loop playsinline preload="auto" poster="${heroFrames.path(1280, 0)}" aria-hidden="true" class="absolute inset-0 h-full w-full object-cover"><source src="${MOBILE_VIDEO}" type="video/mp4" media="${MOBILE_QUERY}"></video>`;
+const MOBILE_VIDEO_HTML = `<img src="${MOBILE_POSTER}" alt="" aria-hidden="true" class="absolute inset-0 h-full w-full object-cover"><video autoplay muted loop playsinline preload="auto" poster="${MOBILE_POSTER}" aria-hidden="true" class="absolute inset-0 h-full w-full object-cover"><source src="${MOBILE_VIDEO}" type="video/mp4" media="${MOBILE_QUERY}"></video>`;
 
 /** null during SSR, then true/false; re-renders if the viewport crosses the breakpoint. */
 function useIsMobile() {
