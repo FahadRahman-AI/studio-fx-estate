@@ -6,8 +6,8 @@ import { tours } from "@/lib/content";
 import { spring } from "@/lib/motion";
 import { Section } from "@/components/ui/Section";
 
-/** Bento blueprint: wide/narrow cells alternate so no two rows line up. */
-const span = ["md:col-span-8", "md:col-span-4", "md:col-span-4", "md:col-span-8"];
+/** Bento blueprint: wide/narrow cells alternate so no two rows line up, then a full-width finale. */
+const span = ["md:col-span-8", "md:col-span-4", "md:col-span-4", "md:col-span-8", "md:col-span-12"];
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
@@ -15,6 +15,9 @@ type Tour = (typeof tours)[number];
 
 function ArchiveCard({ tour, index }: { tour: Tour; index: number }) {
   const video = useRef<HTMLVideoElement>(null);
+  const cell = span[index % span.length];
+  // A full-width 16:9 frame is taller than most laptop screens, so the finale goes 21:9 on desktop.
+  const frame = cell === "md:col-span-12" ? "aspect-video md:aspect-[21/9]" : "aspect-video";
   const reduced = useReducedMotion();
 
   const play = () => {
@@ -48,7 +51,7 @@ function ArchiveCard({ tour, index }: { tour: Tour; index: number }) {
   const pause = () => video.current?.pause();
 
   return (
-    <li className={`col-span-12 flex flex-col bg-white ${span[index % span.length]}`}>
+    <li className={`col-span-12 flex flex-col bg-white ${cell}`}>
       <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 border-b border-line px-4 py-3 text-[10px] tracking-widest whitespace-nowrap uppercase md:px-6">
         <span>Location: {tour.place}</span>
         <span className="text-grey">Pipeline: {tour.pipeline}</span>
@@ -56,7 +59,7 @@ function ArchiveCard({ tour, index }: { tour: Tour; index: number }) {
 
       <div className="overflow-hidden p-4 md:p-6">
         <motion.div
-          className="aspect-video bg-off-white"
+          className={`${frame} bg-off-white`}
           whileHover={reduced ? undefined : { scale: 0.98 }}
           whileTap={reduced ? undefined : { scale: 0.98 }}
           transition={spring}
