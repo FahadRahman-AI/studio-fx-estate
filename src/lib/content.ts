@@ -105,11 +105,11 @@ export const processSpanHours = 48;
 
 export const shotOptions = ["Generative FPV", "Image-to-video", "Synthetic rendering", "Golden hour"];
 
-/** Packages, all prices in USD. */
+/** Packages. Prices are set in USD and converted for display (see lib/currency.ts). */
 export const pricing = [
   {
     name: "Single Listing",
-    price: "$299",
+    priceUsd: 299,
     per: "/video",
     popular: false,
     features: [
@@ -123,7 +123,7 @@ export const pricing = [
   },
   {
     name: "Monthly Retainer",
-    price: "$799",
+    priceUsd: 799,
     per: "/month",
     popular: true,
     features: [
@@ -137,7 +137,7 @@ export const pricing = [
   },
   {
     name: "Agency Partner",
-    price: "$1,990",
+    priceUsd: 1990,
     per: "/month",
     popular: false,
     features: [
