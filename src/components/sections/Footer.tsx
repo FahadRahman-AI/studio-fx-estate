@@ -33,7 +33,7 @@ export function Footer() {
         </div>
         <div className={cell}>
           <p className="type-meta text-white/60">Contact</p>
-          <a href={`mailto:${brand.email}`} className="press type-ui mt-6 inline-block hover:text-white/60">
+          <a href={`mailto:${brand.email}`} className="press type-ui mt-6 inline-block break-all hover:text-white/60">
             {brand.email}
           </a>
         </div>

@@ -5,24 +5,26 @@ export function Process() {
   return (
     <Section id="process" index={3} label="Pipeline" title="48 hours to build and deliver" tone="off-white">
       <div className="page-grid">
-        {/* Desktop: one line, marks positioned by hour */}
-        <div className="relative col-span-12 hidden md:block">
-          <span aria-hidden className="absolute inset-x-0 top-0 h-px bg-black" />
-          <ol className="relative h-64">
-            {steps.map((s) => {
-              const last = s.hour === processSpanHours;
+        {/* Desktop: one line with a tick at each step's true position; text sits in equal
+            columns (first left, middle centred, last right) so it can never overlap. */}
+        <div className="col-span-12 hidden md:block">
+          <div aria-hidden className="relative h-px bg-black">
+            {steps.map((s) => (
+              <span
+                key={s.hour}
+                className="absolute -top-2 h-4 w-px -translate-x-1/2 bg-black first:translate-x-0 last:-translate-x-full"
+                style={{ left: `${(s.hour / processSpanHours) * 100}%` }}
+              />
+            ))}
+          </div>
+          <ol className="grid gap-x-10" style={{ gridTemplateColumns: `repeat(${steps.length}, minmax(0, 1fr))` }}>
+            {steps.map((s, i) => {
+              const align = i === 0 ? "text-left" : i === steps.length - 1 ? "text-right" : "text-center";
               return (
-                <li
-                  key={s.hour}
-                  className="absolute top-0 w-[28%]"
-                  style={last ? { right: 0 } : { left: `${(s.hour / processSpanHours) * 100}%` }}
-                >
-                  <span aria-hidden className={`absolute -top-2 h-4 w-px bg-black ${last ? "right-0" : "left-0"}`} />
-                  <div className={`pt-8 ${last ? "text-right" : ""}`}>
-                    <p className="type-meta text-grey">Hour {s.hour}</p>
-                    <h3 className="type-h3 mt-3">{s.title}</h3>
-                    <p className="type-body mt-3 text-grey">{s.body}</p>
-                  </div>
+                <li key={s.hour} className={`pt-8 ${align}`}>
+                  <p className="type-meta text-grey">Hour {s.hour}</p>
+                  <h3 className="type-h3 mt-3">{s.title}</h3>
+                  <p className="type-body mt-3 text-grey">{s.body}</p>
                 </li>
               );
             })}
