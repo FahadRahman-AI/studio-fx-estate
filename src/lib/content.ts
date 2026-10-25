@@ -94,6 +94,7 @@ export const tours: { name: string; place: string; length: string; pipeline: str
   { name: "Montana Way", place: "Miami", length: "3:10", pipeline: "Synthetic rendering", video: "/videos/montana-way.mp4", poster: "/videos/montana-way.webp" },
   { name: "102 Siena Drive", place: "Beverley Hills", length: "2:05", pipeline: "Image-to-video", video: "/videos/102-siena-drive.mp4", poster: "/videos/102-siena-drive.webp" },
   { name: "Ponderosa Villa", place: "Wadi Al Safa, Dubai", length: "0:20", pipeline: "Generative FPV", video: "/videos/ponderosa-villa.mp4", poster: "/videos/ponderosa-villa.webp" },
+  { name: "Prime Villa", place: "Jumeirah Islands, Dubai", length: "0:46", pipeline: "Generative FPV", video: "/videos/prime-villa.mp4", poster: "/videos/prime-villa.webp" },
 ];
 
 export const steps = [

@@ -6,7 +6,7 @@ import { tours } from "@/lib/content";
 import { spring } from "@/lib/motion";
 import { Section } from "@/components/ui/Section";
 
-/** Bento blueprint: wide/narrow cells alternate so no two rows line up, then a full-width finale. */
+/** Bento blueprint: wide/narrow cells alternate so no two rows line up; everything after is a full-width row. */
 const span = ["md:col-span-8", "md:col-span-4", "md:col-span-4", "md:col-span-8", "md:col-span-12"];
 
 const pad = (n: number) => String(n).padStart(2, "0");
@@ -15,7 +15,7 @@ type Tour = (typeof tours)[number];
 
 function ArchiveCard({ tour, index }: { tour: Tour; index: number }) {
   const video = useRef<HTMLVideoElement>(null);
-  const cell = span[index % span.length];
+  const cell = span[index] ?? "md:col-span-12";
   // A full-width 16:9 frame is taller than most laptop screens, so the finale goes 21:9 on desktop.
   const frame = cell === "md:col-span-12" ? "aspect-video md:aspect-[21/9]" : "aspect-video";
   const reduced = useReducedMotion();
