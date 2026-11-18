@@ -109,10 +109,10 @@ export function BeforeAfterSection() {
 
             {/* Corner labels */}
             <div className="pointer-events-none absolute top-4 left-4 z-10">
-              <span className="type-meta material px-2.5 py-1.5 text-grey">After</span>
+              <span className="type-meta material px-2.5 py-1.5 text-grey">Before</span>
             </div>
             <div className="pointer-events-none absolute top-4 right-4 z-10">
-              <span className="type-meta material-dark px-2.5 py-1.5 text-white">Before</span>
+              <span className="type-meta material-dark px-2.5 py-1.5 text-white">After</span>
             </div>
 
             {/* Drag hint */}
