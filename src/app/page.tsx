@@ -3,6 +3,7 @@ import { Hero } from "@/components/sections/Hero";
 import { Intro } from "@/components/sections/Intro";
 import { Services } from "@/components/sections/Services";
 import { VideoArchiveGrid } from "@/components/sections/VideoArchiveGrid";
+import { BeforeAfterSection } from "@/components/sections/BeforeAfterSection";
 import { Process } from "@/components/sections/Process";
 import { Pricing } from "@/components/sections/Pricing";
 import { Book } from "@/components/sections/Book";
@@ -17,6 +18,7 @@ export default function Home() {
         <Intro />
         <Services />
         <VideoArchiveGrid />
+        <BeforeAfterSection />
         <Process />
         <Pricing />
         <Book />
