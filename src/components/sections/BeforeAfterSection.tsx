@@ -73,20 +73,20 @@ export function BeforeAfterSection() {
             onTouchMove={onTouchMove}
             onTouchEnd={onTouchEnd}
           >
-            {/* BEFORE video */}
+            {/* AFTER video — full frame beneath (right side) */}
             <video
-              src="/videos/penthouse-before.mp4"
+              src="/videos/penthouse-after.mp4"
               autoPlay muted loop playsInline
               className="absolute inset-0 h-full w-full object-cover"
             />
 
-            {/* AFTER video — clipped */}
+            {/* BEFORE video — clipped to left of slider */}
             <div
               className="absolute inset-0"
               style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}
             >
               <video
-                src="/videos/penthouse-after.mp4"
+                src="/videos/penthouse-before.mp4"
                 autoPlay muted loop playsInline
                 className="absolute inset-0 h-full w-full object-cover"
               />
@@ -109,10 +109,10 @@ export function BeforeAfterSection() {
 
             {/* Corner labels */}
             <div className="pointer-events-none absolute top-4 left-4 z-10">
-              <span className="type-meta material px-2.5 py-1.5 text-grey">Before</span>
+              <span className="type-meta material px-2.5 py-1.5 text-grey">After</span>
             </div>
             <div className="pointer-events-none absolute top-4 right-4 z-10">
-              <span className="type-meta material-dark px-2.5 py-1.5 text-white">After</span>
+              <span className="type-meta material-dark px-2.5 py-1.5 text-white">Before</span>
             </div>
 
             {/* Drag hint */}
